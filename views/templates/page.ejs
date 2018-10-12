@@ -1,0 +1,21 @@
+<!-- get请求路径结构： /path?name=value -->
+
+<ul class="pagination">
+    <li class=<%= page === 1 ? 'disabled' : '' %> >
+        <a href=<%= page === 1 ? 'javascript:void(0)' : ('/?page=' + (page -1) ) %> >&laquo;</a>
+    </li>
+    <% pages.forEach(function(pageList){ %>
+    <li class=<%= page === pageList ? 'active' : '' %> >
+        <a href=<%= '/?page=' + pageList %>>
+            <%= pageList %>
+        </a>
+    </li>
+
+    <% }) %>
+    <!-- 标签什么时候不可点，即具有disabled类名 -->
+    <li class=<%= page === pageTotal ? 'disabled' : ''  %> >
+        <a href=<%= page === pageTotal ? 'javascript:void(0)' : ( '/?page=' + (page + 1) ) %>  >&raquo;</a>
+    </li>
+</ul>
+<!-- 使用户点击无效，即超链接没有效果 -->
+<!--<a href="javascript:void(0);"> 超链接 </a>-->

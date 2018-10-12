@@ -1,0 +1,33 @@
+<!--<%= students   %>-->
+
+<table class="table table-striped">
+    <tr>
+        <td> 序号 </td>
+        <td> 姓名 </td>
+        <td> 年龄 </td>
+        <td> 性别 </td>
+        <td> 班级 </td>
+        <td> 操作 </td>
+    </tr>
+
+    <% for( var i = 0; i < students.length; i++ ){ %>
+    <tr>
+        <td> <%= i + 1 %> </td>
+        <td> <%= students[i].stuname %> </td>
+        <td> <%= students[i].age %> </td>
+
+        <% var sex = students[i].isMale ? '男' : '女' %>
+        <td> <%= sex %> </td>
+        <td> <%= students[i].banji.lesson + '-' + students[i].banji.name %> </td>
+        <td>
+            <a data-toggle="modal" stuname=<%= students[i].stuname %> class="update">
+                <i class="glyphicon glyphicon-edit"></i>
+            </a>
+            <a  stuname=<%= students[i].stuname %> class="delete">
+                <i class="glyphicon glyphicon-trash"> </i>
+            </a>
+        </td>
+    </tr>
+    <% } %>
+
+</table>

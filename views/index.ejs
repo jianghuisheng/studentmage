@@ -1,0 +1,136 @@
+<% include templates/header.ejs %>
+<div>
+
+
+    <nav class="navbar navbar-inverse" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">学生信息管理系统</a>
+            </div>
+            <div>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="/">学生管理</a></li>
+                    <li><a href="#">班级管理</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <a class="btn btn-warning" data-toggle="modal" data-target="#myModal5"> 添加班级 </a>
+        <a class="btn btn-success" data-toggle="modal" data-target="#myModal2">添加学生</a>
+        <a href="" class="btn btn-danger"> 查询 </a>
+
+    </div>
+
+
+    <br>
+    <!-- 学生显示列表 -->
+    <main class="container">
+        <% include templates/student-list.ejs %>
+    </main>
+
+
+
+
+
+    <!-- 学生添加模态框（Modal） -->
+    <% include templates/student-add.ejs %>
+
+
+    <!-- 提示模态框（Modal） -->
+    <% include templates/tishi.ejs %>
+
+
+    <!-- 修改模态框 -->
+    <section>
+
+    </section>
+
+    <!-- 班级添加模态框 -->
+    <% include banji.ejs %>
+
+    <!-- 分页模板 -->
+    <div class="container">
+        <% include templates/page.ejs %>
+    </div>
+
+
+
+
+    <script>
+
+        $('.delete').click(function(ev){
+            console.log('12345')
+            ev.preventDefault();
+            var stuname = $(this).attr('stuname');
+            $.cookie('stuname', stuname);
+
+            $.get('/student/delete/' + stuname, '', function(res){
+                if(res.error == 0){
+                    // 显示模态框
+                    $('#myModal3 .modal-body').html( res.msg );
+                    $('#myModal3').modal('show');
+
+                    // 当模态框隐藏之后再执行回调函数
+                    $('#myModal3').on('hide.bs.modal', function(){
+                        location.href = '/';
+                    })
+                }else {
+                    alert(res.msg);
+                }
+            })
+        })
+
+
+        // 添加学生信息
+        $('#formAdd').submit(function(ev){
+            // 关闭模态框
+            $('#myModal2').modal('hide');
+
+            ev.preventDefault();
+            var data = $(this).serialize();
+            $.post('/student/add',data, function(res){
+
+                if( res.error == 0 ){
+//                    alert(res.msg);
+                    // 显示模态框
+                    $('#myModal3 .modal-body').html( res.msg );
+                    $('#myModal3').modal('show');
+
+                    // 当模态框隐藏之后再执行回调函数
+                    $('#myModal3').on('hide.bs.modal', function(){
+                        location.href = '/';
+                    })
+
+                } else {
+                    alert(res.msg);
+                }
+
+
+            })
+        })
+
+        // 显示某学生信息
+        $('.update').click(function(){
+            var stuname = $(this).attr('stuname');
+            $.get('/student/' + stuname, '', function(res){
+                console.log(res);
+                $('section').html(res);
+                $('#myModal4').modal('show');
+            })
+
+        })
+
+        $.get('http://localhost:3008/','').then(function (res) {
+            console.log(res)
+        })
+
+    </script>
+
+
+
+</div>
+
+
+<% include templates/footer.ejs %>

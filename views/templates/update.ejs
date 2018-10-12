@@ -1,0 +1,93 @@
+
+
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">
+                    更新信息
+                </h4>
+            </div>
+            <div class="modal-body">
+
+                <form class="form-horizontal" id="formUpdate" role="form">
+                    <div class="form-group">
+                        <label for="firstname" class="col-sm-2 control-label">姓名</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="firstname" name="stuname" value=<%= student.stuname %> disabled placeholder="请输入姓名">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastname" class="col-sm-2 control-label">年龄</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="form-control" id="lastname" placeholder="请输入年龄" value=<%= student.age %> name="age">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">性别</label>
+                        <div class="col-sm-10">
+                            <input type="radio"  value="true" id="man" name="isMale" <%= student.isMale ? 'checked' : '' %> >
+                            <label for="man"> 男 </label>
+                            <input type="radio"  value="false" id="woman" name="isMale" <%= student.isMale ? '' : 'checked' %> >
+                            <label for="woman"> 女 </label>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="banji" class="col-sm-2 control-label"> 班级 </label>
+                        <div class="col-sm-10">
+
+                            <select class="form-control"  id="banji"  name="banji" required>
+                                <option value="">请选择</option>
+                                <% banjis.forEach(function(banji){ %>
+
+                                <option value=<%= banji._id %> <%= (student.banji.lesson + '-' + student.banji.name) === (banji.lesson + '-' + banji.name) ? 'selected' : '' %> > <%= banji.lesson + '-' + banji.name %> </option>
+
+                                <% }) %>
+                            </select>
+
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <!-- form属性：其值是formID，决定按钮是属于哪个表单的 -->
+                <button type="submit" form="formUpdate" class="btn btn-primary"> 更新 </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<script>
+    $('#formUpdate').submit(function(ev){
+
+        $('#myModal4').modal('hide');
+
+        ev.preventDefault();
+        var stuname = $('#formUpdate input[name=stuname]').val();
+//        alert(stuname);
+        var data = $(this).serialize();
+
+        $.post('/student/update/' + stuname, data, function(res){
+            if(res.error == 0){
+
+                $('#myModal3 .modal-body').html( res.msg );
+                $('#myModal3').modal('show');
+
+                // 当模态框隐藏之后再执行回调函数
+                $('#myModal3').on('hide.bs.modal', function(){
+                    location.href = '/';
+                })
+            }
+        })
+    })
+</script>
+
+

@@ -1,0 +1,73 @@
+<div class="banji">
+
+
+    <div class="modal fade" id="myModal5" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel5">添加班级</h4>
+                </div>
+                <div class="modal-body">
+
+                    <form class="form-horizontal" id="formBanji" role="form">
+                        <div class="form-group">
+                            <label for="banji" class="col-sm-2 control-label">名字</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="name" id="banji" placeholder="请输入班级" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="teacher" class="col-sm-2 control-label">授课老师</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="teacher" id="teacher" placeholder="请输入老师名称" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="lesson" class="col-sm-2 control-label">课程</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="lesson" id="lesson" placeholder="请输入课程" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="location" class="col-sm-2 control-label">位置</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="location" id="location" placeholder="请输入位置" required>
+                            </div>
+                        </div>
+
+
+                    </form>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="submit" form="formBanji" class="btn btn-primary">添加</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+    <script>
+        $('form').submit(function(ev){
+            ev.preventDefault();
+            $('#myModal5').modal('hide');
+            var data = $(this).serialize();
+            $.post('/banji/add', data, function(res){
+                if(res.error == 0 ){
+                    $('#myModal3 .modal-body').html( res.msg );
+                    $('#myModal3').modal('show');
+
+                    // 当模态框隐藏之后再执行回调函数
+                    $('#myModal3').on('hide.bs.modal', function(){
+                        location.href = '/';
+                    })
+                }else {
+                    alert(res.msg);
+                }
+            })
+        })
+    </script>
+
+</div>
